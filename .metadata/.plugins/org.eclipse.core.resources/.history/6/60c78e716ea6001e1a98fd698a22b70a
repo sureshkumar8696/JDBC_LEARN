@@ -1,0 +1,79 @@
+package com.jdbc.service;
+
+import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+import com.jdbc.model.Employee;
+import com.jdbc.utli.DatabaseUtil;
+import com.jdbc.utli.QueryUtil;
+
+public class DatabaseService {
+	DatabaseUtil databaseUtil = new DatabaseUtil();
+
+	public void insertEmployee(Employee employee) throws SQLException {
+		try (Connection connection = databaseUtil.getConnection()) {
+			PreparedStatement preparedStatement = connection.prepareStatement(QueryUtil.insertEmployeeQuery());
+
+			preparedStatement.setString(1, employee.getEmployeeName());
+			preparedStatement.setString(2, employee.getEmployeeAddress());
+			preparedStatement.setDouble(3, employee.getEmployeeSalary());
+
+			int row = preparedStatement.executeUpdate();
+
+			if (row > 0) {
+				System.out.println("Record created successfully.");
+			} else {
+				System.out.println("Insert record failed...");
+			}
+		}
+	}
+
+	public void getAllEmployee() throws SQLException {
+		try (Connection connection = databaseUtil.getConnection();
+				Statement statement = connection.createStatement();
+				ResultSet result = statement.executeQuery(QueryUtil.selectAllEmployeeQuery())) {
+
+			while (result.next()) {
+				printEmployee(new Employee(result.getInt("EMPLOYEE_ID"), result.getString("EMPLOYEE_NAME"),
+						result.getString("EMPLOYEE_ADDRESS"), result.getDouble("EMPLOYEE_SALARY")));
+			}
+		}
+	}
+
+	private void printEmployee(Employee employee) {
+		System.out.println("Employee id: " + employee.getEmployeeId());
+		System.out.println("Employee name: " + employee.getEmployeeName());
+		System.out.println("Employee address: " + employee.getEmployeeAddress());
+		System.out.println("Employee salary: " + employee.getEmployeeSalary() + "RS");
+		System.out.println();
+	}
+
+	public boolean getEmployeeById(int id) throws SQLException {
+		boolean isFound = false;
+		
+		try (Connection connection = databaseUtil.getConnection();
+				Statement statement = connection.createStatement();
+				ResultSet result = statement.executeQuery(QueryUtil.selectEmployeeById(id))) {
+			if (result.next()) {
+				isFound = true;
+				printEmployee(new Employee(
+						result.getInt("EMPLOYEE_ID"),
+						result.getString("EMPLOYEE_NAME"), result.getString("EMPLOYEE_ADDRESS"),
+						result.getDouble("EMPLOYEE_SALARY")));
+			} else {
+				System.out.println("Record not found!...");
+			}
+		}
+		return isFound;
+	}
+	public void deleteEmployeeById(int id)throws SQLException {
+		try(Connection connection = databaseUtil.getConnection();
+				Statement statement = connection.createStatement();
+				ResultSet result = statement.executeQuery(QueryUtil.deleteEmployeeById(id))){
+			
+		}
+	}
+	
+	
+}

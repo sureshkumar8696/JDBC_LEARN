@@ -1,0 +1,9 @@
+package com.jdbc.utli;
+
+public class QueryUtil {
+	public static String insertEmployeeQuery() {
+		return "INSERT INTO EMPLOYEE_INFO (EMPLOYEE_NAME, EMPLOYEE_ADDRESS,EMPLOYEE_SALARY)"
+		+ "VALUES (?,?,?)";
+		
+	}
+}

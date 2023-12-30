@@ -1,0 +1,16 @@
+package com.jdbc.service;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+
+import com.jdbc.model.Employee;
+import com.jdbc.utli.DatabaseUtil;
+
+public class DatabaseService {
+	DatabaseUtil databaseUtil = new DatabaseUtil();
+	public void insertEmployee(Employee employee) throws SQLException {
+		try(Connection connection = databaseUtil.getConnection()) {
+			
+		}
+	}
+}

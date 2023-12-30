@@ -1,0 +1,10 @@
+package com.jdbc.service;
+
+import com.jdbc.model.Employee;
+
+public class DatabaseService {
+	Database
+	public void insertEmployee(Employee employee) {
+		
+	}
+}

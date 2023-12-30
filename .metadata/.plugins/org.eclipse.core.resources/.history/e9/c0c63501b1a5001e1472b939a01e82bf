@@ -1,0 +1,37 @@
+package com.jdbc.service;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+import com.jdbc.model.Employee;
+import com.jdbc.utli.DatabaseUtil;
+import com.jdbc.utli.QueryUtil;
+
+public class DatabaseService {
+	DatabaseUtil databaseUtil = new DatabaseUtil();
+
+	public void insertEmployee(Employee employee) throws SQLException {
+		try (Connection connection = databaseUtil.getConnection()) {
+			PreparedStatement preparedStatement = connection.prepareStatement(QueryUtil.insertEmployeeQuery());
+			
+			preparedStatement.setString(1, employee.getEmployeeName());
+			preparedStatement.setString(2, employee.getEmployeeAddress());
+			preparedStatement.setDouble(3, employee.getEmployeeSalary());
+			
+			int row = preparedStatement.executeUpdate();
+			
+			if(row>0) {
+				System.out.println("Record created successfully.");
+			}else {
+				System.out.println("Insert record failed...");
+			}
+		}
+	}
+	
+	public void getAllEmployee() throws SQLException {
+		try(Connection connection = databaseUtil.getConnection()){
+			
+		}
+	}
+}
